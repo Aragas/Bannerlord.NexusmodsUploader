@@ -19,7 +19,7 @@ jobs:
       uses: actions/setup-dotnet@master
       with:
         dotnet-version: 3.1.300
-        source-url: https://nuget.pkg.github.com/Bannerlord-Unofficial-Tools-Resources/index.json
+        source-url: https://nuget.pkg.github.com/Aragas/index.json
       env:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
