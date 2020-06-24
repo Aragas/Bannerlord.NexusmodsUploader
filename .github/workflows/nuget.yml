@@ -26,5 +26,10 @@ jobs:
     - name: Pack Bannerlord.NexusmodsUploader (Release)
       run: dotnet pack Bannerlord.NexusmodsUploader/Bannerlord.NexusmodsUploader.csproj --configuration Release -o "./packages" 
 
-    - name: Push with dotnet
-      run: dotnet nuget push "./packages/*.nupkg"
+    - name: Push (workaround)
+      run: |
+           for f in ./packages/*.nupkg
+           do
+             curl -vX PUT -u "vslee:${{secrets.GITHUB_TOKEN}}" -F package=@$f https://nuget.pkg.github.com/Aragas/
+           done
+      shell: bash
