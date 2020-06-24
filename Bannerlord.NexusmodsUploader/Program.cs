@@ -38,6 +38,8 @@ namespace Bannerlord.NexusmodsUploader
             }
 
             Directory.CreateDirectory("Screenshots");
+
+            var isLocal = Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == null;
             RemoteWebDriver driver;
             if (isLocal)
             {
