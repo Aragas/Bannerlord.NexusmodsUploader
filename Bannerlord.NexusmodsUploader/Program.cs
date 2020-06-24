@@ -34,8 +34,7 @@ namespace Bannerlord.NexusmodsUploader
         {
             if (!File.Exists(options.FilePath))
             {
-                Console.WriteLine($"File does not exist {options.FilePath}");
-                return;
+                throw new FileNotFoundException("File does not exist!", options.FilePath);
             }
 
             var isLocal = Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == null;
