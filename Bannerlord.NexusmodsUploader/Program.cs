@@ -50,7 +50,7 @@ namespace Bannerlord.NexusmodsUploader
                 driver = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), chromeOptions) { FileDetector = new LocalFileDetector() };
             }
 
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
 
             driver.Navigate().GoToUrl("https://nexusmods.com");
 
@@ -92,14 +92,14 @@ namespace Bannerlord.NexusmodsUploader
             var file_description = driver.FindElement(By.Id("file-description"));
             file_description.SendKeys(options.Description);
 
-            //driver.GetScreenshot().SaveAsFile("d_upload.png");
+            driver.GetScreenshot().SaveAsFile("d_upload.png");
             Console.WriteLine("Checking input_file...");
             var input_file = driver.FindElement(By.Id("add_file_browse")).FindElements(By.XPath(".//*")).First();
             input_file.SendKeys(options.FilePath);
-            //driver.GetScreenshot().SaveAsFile("i_upload.png");
+            driver.GetScreenshot().SaveAsFile("i_upload.png");
             Console.WriteLine("Waiting for upload_success...");
             wait.Until(ExpectedConditions.ElementExists(By.Id("upload_success")));
-            //driver.GetScreenshot().SaveAsFile("s_upload.png");
+            driver.GetScreenshot().SaveAsFile("s_upload.png");
 
             Console.WriteLine("Checking js_save_file...");
             var js_save_file = driver.FindElement(By.Id("js-save-file"));
@@ -110,11 +110,11 @@ namespace Bannerlord.NexusmodsUploader
             //var save_button = driver.FindElement(By.XPath("//*[@id=\"top-save-button-container\"]/li[1]/a"));
             //save_button.Click();
 
-            Console.WriteLine("Waiting 20000ms...");
+            Console.WriteLine("Waiting 10000ms...");
             var now = DateTime.Now;
-            wait.Until(wd => (DateTime.Now - now) - TimeSpan.FromMilliseconds(20000) > TimeSpan.Zero);
+            wait.Until(wd => (DateTime.Now - now) - TimeSpan.FromMilliseconds(10000) > TimeSpan.Zero);
 
-            //driver.GetScreenshot().SaveAsFile("done.png");
+            driver.GetScreenshot().SaveAsFile("done.png");
             Console.WriteLine("Done!");
             driver.Dispose();
         }
