@@ -13,6 +13,7 @@ using SeleniumExtras.WaitHelpers;
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -31,6 +32,12 @@ namespace Bannerlord.NexusmodsUploader
 
         private static void Upload(UploadOptions options)
         {
+            if (!File.Exists(options.FilePath))
+            {
+                Console.WriteLine($"File does not exist {options.FilePath}");
+                return;
+            }
+
             var isLocal = Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == null;
             RemoteWebDriver driver;
             if (isLocal)
