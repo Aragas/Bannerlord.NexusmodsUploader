@@ -21,12 +21,20 @@ jobs:
     - name: Setup BUTR GPR
       uses: actions/setup-dotnet@master
       with:
-        source-url: https://nuget.pkg.github.com
+        source-url: https://nuget.pkg.github.com/BUTR/index.json
       env:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
     - name: Pack Bannerlord.NexusmodsUploader (Release)
       run: dotnet pack Bannerlord.NexusmodsUploader/Bannerlord.NexusmodsUploader.csproj --configuration Release -o "./packages" 
 
-    - name: Push with dotnet
-      run: dotnet nuget push "./packages/*.nupkg"
+    #- name: Push with dotnet
+    #  run: dotnet nuget push "./packages/*.nupkg"
+
+    - name: Publish (workaround)
+      run: |
+           for f in ./packages/*.nupkg
+           do
+             curl -vX PUT -u "vslee:${{secrets.GITHUB_TOKEN}}" -F package=@$f https://nuget.pkg.github.com/BUTR/
+           done
+      shell: bash
