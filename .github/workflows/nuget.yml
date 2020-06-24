@@ -18,7 +18,7 @@ jobs:
       with:
         dotnet-version: 3.1.300
 
-    - name: Setup .NET Core
+    - name: Setup BUTR GPR
       uses: actions/setup-dotnet@master
       with:
         source-url: https://nuget.pkg.github.com/BUTR/index.json
