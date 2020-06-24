@@ -92,20 +92,29 @@ namespace Bannerlord.NexusmodsUploader
             var file_description = driver.FindElement(By.Id("file-description"));
             file_description.SendKeys(options.Description);
 
+            //driver.GetScreenshot().SaveAsFile("d_upload.png");
             Console.WriteLine("Checking input_file...");
             var input_file = driver.FindElement(By.Id("add_file_browse")).FindElements(By.XPath(".//*")).First();
             input_file.SendKeys(options.FilePath);
+            //driver.GetScreenshot().SaveAsFile("i_upload.png");
             Console.WriteLine("Waiting for upload_success...");
             wait.Until(ExpectedConditions.ElementExists(By.Id("upload_success")));
+            //driver.GetScreenshot().SaveAsFile("s_upload.png");
 
             Console.WriteLine("Checking js_save_file...");
             var js_save_file = driver.FindElement(By.Id("js-save-file"));
-            js_save_file.Click();
+            js_save_file.Submit();
+
+            //driver.GetScreenshot().SaveAsFile("save.png");
+            //Console.WriteLine("Checking save button...");
+            //var save_button = driver.FindElement(By.XPath("//*[@id=\"top-save-button-container\"]/li[1]/a"));
+            //save_button.Click();
 
             Console.WriteLine("Waiting 5000ms...");
             var now = DateTime.Now;
             wait.Until(wd => (DateTime.Now - now) - TimeSpan.FromMilliseconds(5000) > TimeSpan.Zero);
 
+            //driver.GetScreenshot().SaveAsFile("done.png");
             Console.WriteLine("Done!");
             driver.Dispose();
         }
