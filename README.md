@@ -44,3 +44,5 @@ When installed as a global tool:
 ```shell
 bannerlord_nexusmods_uploader upload -g mountandblade2bannerlord -m 612 -n "Mod Configuration Menu" -v "v3.1.0" -l true -e true -d "MULTILINE\nCHANGELOG" -p "$PWD/MCM.Standalone.zip";
 ```
+  
+Check [this](https://github.com/Aragas/Bannerlord.MBOptionScreen/blob/ff921182721919055cb74d19d12ddb6eda74d679/.github/workflows/test-and-publish.yml#L133-L208) for a workflow example.
