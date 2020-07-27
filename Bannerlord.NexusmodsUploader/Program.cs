@@ -54,15 +54,17 @@ namespace Bannerlord.NexusmodsUploader
             foreach (var cookieEntry in JsonConvert.DeserializeObject<List<CookieEntry>>(cookies ?? "[]"))
                 driver.Manage().Cookies.AddCookie(new Cookie(cookieEntry.Id, cookieEntry.Value, cookieEntry.Domain, cookieEntry.Path, cookieEntry.Date.LocalDateTime));
 
-            driver.Navigate().GoToUrl("https://www.nexusmods.com/users/myaccount");
-
-            var notice = driver.FindElement(By.XPath("//*[starts-with(@id,'Notice')]"));
-            if (notice.Text == "Error")
+            try
             {
-                Console.WriteLine("Cookies are no longer valid!");
-                Environment.Exit(1);
+                var notice = driver.FindElement(By.XPath("//*[starts-with(@id,'Notice')]"));
+                if (notice.Text == "Error")
+                {
+                    Console.WriteLine("Cookies are no longer valid!");
+                    Environment.Exit(1);
+                }
+
             }
-            else
+            catch (NoSuchElementException)
             {
                 Console.WriteLine("Cookies are valid!");
                 Environment.Exit(0);
