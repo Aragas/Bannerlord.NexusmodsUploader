@@ -26,8 +26,47 @@ namespace Bannerlord.NexusmodsUploader
             CodePagesEncodingProvider.Instance.GetEncoding(437);
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            Parser.Default.ParseArguments<UploadOptions>(args)
-                .WithParsed(Upload);
+            Parser.Default.ParseArguments<UploadOptions, VerifyCookiesOptions>(args)
+                .WithParsed<UploadOptions>(Upload)
+                .WithParsed<VerifyCookiesOptions>(VerifyCookies);
+        }
+
+        private static void VerifyCookies(VerifyCookiesOptions options)
+        {
+            var isLocal = Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == null;
+            RemoteWebDriver driver;
+            if (isLocal)
+            {
+                driver = new ChromeDriver(new ChromeOptions { BrowserVersion = "83.0.4103.3900" });
+            }
+            else
+            {
+                var chromeOptions = new ChromeOptions();
+                chromeOptions.AddArguments("start-maximized");
+                driver = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), chromeOptions) { FileDetector = new LocalFileDetector() };
+            }
+
+            driver.Navigate().GoToUrl("https://nexusmods.com");
+
+            driver.Manage().Cookies.DeleteAllCookies();
+            var cookies = Environment.GetEnvironmentVariable("NEXUSMODS_COOKIES_JSON");
+            Console.WriteLine($"Length of env cookies {cookies?.Length ?? 0}");
+            foreach (var cookieEntry in JsonConvert.DeserializeObject<List<CookieEntry>>(cookies ?? "[]"))
+                driver.Manage().Cookies.AddCookie(new Cookie(cookieEntry.Id, cookieEntry.Value, cookieEntry.Domain, cookieEntry.Path, cookieEntry.Date.LocalDateTime));
+
+            driver.Navigate().GoToUrl("https://www.nexusmods.com/users/myaccount");
+
+            var notice = driver.FindElement(By.XPath("//*[starts-with(@id,'Notice')]"));
+            if (notice.Text == "Error")
+            {
+                Console.WriteLine("Cookies are no longer valid!");
+                Environment.Exit(1);
+            }
+            else
+            {
+                Console.WriteLine("Cookies are valid!");
+                Environment.Exit(0);
+            }
         }
 
         private static void Upload(UploadOptions options)
