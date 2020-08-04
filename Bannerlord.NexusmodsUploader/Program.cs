@@ -153,9 +153,9 @@ namespace Bannerlord.NexusmodsUploader
             //var save_button = driver.FindElement(By.XPath("//*[@id=\"top-save-button-container\"]/li[1]/a"));
             //save_button.Click();
 
-            Console.WriteLine("Waiting 10000ms...");
+            Console.WriteLine("Waiting 15000ms...");
             var now = DateTime.Now;
-            wait.Until(wd => (DateTime.Now - now) - TimeSpan.FromMilliseconds(10000) > TimeSpan.Zero);
+            wait.Until(wd => (DateTime.Now - now) - TimeSpan.FromMilliseconds(15000) > TimeSpan.Zero);
 
             driver.GetScreenshot().SaveAsFile("Screenshots/done.png");
             Console.WriteLine("Done!");
