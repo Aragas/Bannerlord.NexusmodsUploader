@@ -5,7 +5,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
-    <Version>1.0.11</Version>
+    <GITHUB_RUN_NUMBER Condition="$(GITHUB_RUN_NUMBER) == ''">0</GITHUB_RUN_NUMBER>
+    <Version>1.0.11.$(GITHUB_RUN_NUMBER) </Version>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>bannerlord_nexusmods_uploader</ToolCommandName>
     <Authors>Aragas</Authors>
