@@ -54,6 +54,8 @@ namespace Bannerlord.NexusmodsUploader
             foreach (var cookieEntry in JsonConvert.DeserializeObject<List<CookieEntry>>(cookies ?? "[]"))
                 driver.Manage().Cookies.AddCookie(new Cookie(cookieEntry.Id, cookieEntry.Value, cookieEntry.Domain, cookieEntry.Path, cookieEntry.Date.LocalDateTime));
 
+            driver.Navigate().GoToUrl("https://www.nexusmods.com/users/myaccount");
+
             try
             {
                 var notice = driver.FindElement(By.XPath("//*[starts-with(@id,'Notice')]"));
